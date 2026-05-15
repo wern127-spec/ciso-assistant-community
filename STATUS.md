@@ -1,37 +1,25 @@
-# Status: Etap 2 — API (DRF)
+# Status: Etap 3 — Frontend CRUD (CZĘŚCIOWO, mam blokadę)
 
 ## Co zrobiłem
-- Dodałem API (interfejs programistyczny) dla wszystkich 5 tabel — można teraz odczytywać i zapisywać dane przez sieć
-- Każda tabela ma komplet operacji: lista, podgląd, tworzenie, edycja, usuwanie
-- Zbudowałem **specjalny endpoint zbiorczy** `overview` — zwraca w jednym zapytaniu wszystko o usłudze: jej domenę, zasoby z opisem wpływu, RTO/RPO, plany ciągłości i historię testów (posortowaną od najnowszego). To on zasili główny widok w Etapie 4.
-- Dodałem endpointy pomocnicze z listami wartości (np. poziomy krytyczności, typy testów) — przydadzą się przy formularzach
-- Uprawnienia działają zgodnie z mechanizmem CISO Assistant (RBAC per domena)
-- Napisałem 4 testy API (dostępność endpointów, tworzenie usługi, listy wartości, endpoint zbiorczy) — **wszystkie przeszły**
+- Rozwiązałem problem pamięci Dockera inaczej niż przez build: uruchomiłem interfejs w trybie deweloperskim wprost na Macu (lekki, z auto-odświeżaniem), połączony z backendem w Dockerze. Działa stabilnie.
+- Zarejestrowałem wszystkie 5 encji w interfejsie (listy, kolumny, formularze, walidacja, menu boczne)
+- Dodałem sekcję **"Business Continuity"** w menu po lewej
+- Na karcie zasobu (Asset) dodałem powiązanie do usług i procedur
 
-## Jak to sprawdzić (klikalnie)
-1. Wejdź na **https://localhost:8443/api/schema/swagger/**
-   - (jeśli przeglądarka ostrzega o certyfikacie → "Zaawansowane" → "Przejdź mimo to")
-2. To jest interaktywna dokumentacja API. Użyj **Ctrl+F** i wpisz `business-continuity`
-3. Powinieneś zobaczyć **5 nowych grup endpointów**:
-   - `business-continuity/business-services`
-   - `business-continuity/service-asset-links`
-   - `business-continuity/continuity-plans`
-   - `business-continuity/continuity-plan-tests`
-   - `business-continuity/asset-recovery-procedures`
-4. Rozwiń `business-services` — zobaczysz m.in. operację **`overview`** (endpoint zbiorczy)
+## Co działa (sprawdzone)
+- **Logowanie** działa (admin@admin.com / admin1234)
+- **Wszystkie 5 list działa** — wchodzisz w menu "Business Continuity", widzisz listy usług, planów, testów, procedur, powiązań
+- **Dodawanie rekordów przez API działa** (utworzyłem testową usługę i powiązania — pojawiają się na liście w interfejsie)
+- Sekcja w menu jest widoczna
+- Kontrolnie: istniejące ekrany CISO (np. domeny) działają normalnie — środowisko jest zdrowe
 
-Alternatywnie Redoc (ładniejszy podgląd): **https://localhost:8443/api/schema/redoc/**
+## Na czym utknąłem (reguła STOP)
+- **Strona szczegółów pojedynczego rekordu** (np. klik w konkretny plan, żeby zobaczyć/edytować jego pełne dane) **zwraca błąd 500** dla naszych 5 nowych encji.
+- Istniejące ekrany CISO (domeny itp.) otwierają szczegóły bez problemu — błąd dotyczy tylko naszych nowych encji.
+- Spróbowałem ~5 różnych podejść diagnostycznych (analiza kodu ładującego dane, nagłówki, instrumentacja loga w 2 miejscach, skan wszystkich warstw layoutu i hooków). Nie ustaliłem jednoznacznie źródła — błąd pojawia się zanim kod ładujący stronę szczegółów w ogóle się uruchamia, co jest nietypowe.
 
-## Co działa
-- 5 kompletów endpointów CRUD + endpoint zbiorczy `overview`
-- Endpointy są widoczne w oficjalnym schemacie API (Swagger/Redoc)
-- Zabezpieczenie działa: bez logowania endpoint zwraca 401 (odmowa), nie 404 — czyli istnieje i jest chroniony
-- 9/9 testów zielonych łącznie (5 z Etapu 1 + 4 nowe API)
+## Ważny kontekst do decyzji
+Najważniejszy ekran całego modułu (Etap 4 — **widok zbiorczy usługi** z 7 sekcjami) i tak buduję jako **osobną, dedykowaną stronę**, która NIE korzysta z zepsutego mechanizmu generycznego. Czyli ta blokada najpewniej **nie dotknie głównego ekranu**, który zobaczysz.
 
-## Co nie działa lub świadomie pominąłem
-- **Frontend (interfejs graficzny) nadal nie wstaje** — build pada na braku pamięci Dockera. Etap 2 jest backendowy, więc to nie przeszkadza. **Przed Etapem 3 (interfejs) trzeba zwiększyć pamięć Docker Desktop** — przeprowadzę Cię przez to.
-- Eksport do Excela / zaawansowane filtry — świadomie pominięte, nie ma ich w MVP
-- Pełny interfejs użytkownika — to Etap 3 i 4
-
-## Co dalej
-Następny krok: **Etap 3 — Frontend CRUD** (interfejs: listy, formularze, sekcja "Business Continuity" w menu). To wymaga naprawy pamięci Dockera. Napisz **"dalej"** — wtedy najpierw zajmiemy się pamięcią, potem interfejsem.
+## Co dalej — proszę o decyzję
+Pytam Cię w osobnym pytaniu, jak chcesz, żebym kontynuował.

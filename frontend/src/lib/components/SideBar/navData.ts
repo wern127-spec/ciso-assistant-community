@@ -162,6 +162,35 @@ export const navData = {
 			]
 		},
 		{
+			name: 'businessContinuity',
+			items: [
+				{
+					name: 'businessServices',
+					fa_icon: 'fa-solid fa-sitemap',
+					href: '/business-services',
+					permissions: ['view_businessservice']
+				},
+				{
+					name: 'continuityPlans',
+					fa_icon: 'fa-solid fa-shield-halved',
+					href: '/continuity-plans',
+					permissions: ['view_continuityplan']
+				},
+				{
+					name: 'continuityPlanTests',
+					fa_icon: 'fa-solid fa-vial-circle-check',
+					href: '/continuity-plan-tests',
+					permissions: ['view_continuityplantest']
+				},
+				{
+					name: 'assetRecoveryProcedures',
+					fa_icon: 'fa-solid fa-screwdriver-wrench',
+					href: '/asset-recovery-procedures',
+					permissions: ['view_assetrecoveryprocedure']
+				}
+			]
+		},
+		{
 			name: 'operations',
 			items: [
 				{

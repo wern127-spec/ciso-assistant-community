@@ -915,6 +915,75 @@ export const EscalationThresholdSchema = z.object({
 	quanti_impact: z.number().optional(),
 	justification: z.string().optional()
 });
+export const BusinessServiceSchema = z.object({
+	...NameDescriptionMixin,
+	folder: z.string(),
+	ref_id: z.string().optional(),
+	owner: z.string().optional().nullable(),
+	criticality: z.string().optional().default('medium'),
+	status: z.string().optional().default('draft'),
+	rto_hours: z.number().optional().nullable(),
+	rpo_hours: z.number().optional().nullable(),
+	mtpd_hours: z.number().optional().nullable(),
+	domain_impact_description: z.string().optional().nullable()
+});
+
+export const ServiceAssetLinkSchema = z.object({
+	folder: z.string(),
+	business_service: z.string(),
+	asset: z.string(),
+	dependency_type: z.string().optional().default('important'),
+	asset_impact_description: z.string().optional().nullable(),
+	notes: z.string().optional().nullable()
+});
+
+export const ContinuityPlanSchema = z.object({
+	...NameDescriptionMixin,
+	folder: z.string(),
+	business_service: z.string(),
+	ref_id: z.string().optional(),
+	version: z.string().optional().default('1.0'),
+	scenario: z.string().optional().nullable(),
+	recovery_strategy: z.string().optional().nullable(),
+	procedure_steps: z.string().optional().nullable(),
+	responsible_team: z.string().optional().nullable(),
+	status: z.string().optional().default('draft'),
+	last_review_date: z
+		.union([z.literal('').transform(() => null), z.iso.date()])
+		.nullish(),
+	next_review_date: z
+		.union([z.literal('').transform(() => null), z.iso.date()])
+		.nullish(),
+	referenced_asset_procedures: z.array(z.string().optional()).optional()
+});
+
+export const ContinuityPlanTestSchema = z.object({
+	folder: z.string(),
+	continuity_plan: z.string(),
+	test_date: z.iso.date(),
+	test_type: z.string().optional().default('tabletop'),
+	result: z.string().optional().default('partial'),
+	participants: z.string().optional().nullable(),
+	objectives: z.string().optional().nullable(),
+	findings: z.string().optional().nullable(),
+	actions: z.string().optional().nullable(),
+	evidence: z.string().optional().nullable()
+});
+
+export const AssetRecoveryProcedureSchema = z.object({
+	...NameDescriptionMixin,
+	folder: z.string(),
+	asset: z.string(),
+	procedure_type: z.string().optional().default('backup'),
+	content: z.string().optional().nullable(),
+	version: z.string().optional().default('1.0'),
+	last_updated: z
+		.union([z.literal('').transform(() => null), z.iso.date()])
+		.nullish(),
+	owner: z.string().optional().nullable(),
+	evidence: z.string().optional().nullable()
+});
+
 export const processingSchema = z.object({
 	...NameDescriptionMixin,
 	folder: z.string(),
@@ -1757,6 +1826,11 @@ const SCHEMA_MAP: Record<string, ZodSchema> = {
 	'business-impact-analysis': BusinessImpactAnalysisSchema,
 	'asset-assessments': AssetAssessmentSchema,
 	'escalation-thresholds': EscalationThresholdSchema,
+	'business-services': BusinessServiceSchema,
+	'service-asset-links': ServiceAssetLinkSchema,
+	'continuity-plans': ContinuityPlanSchema,
+	'continuity-plan-tests': ContinuityPlanTestSchema,
+	'asset-recovery-procedures': AssetRecoveryProcedureSchema,
 	processings: processingSchema,
 	'right-requests': rightRequestSchema,
 	'data-breaches': dataBreachSchema,

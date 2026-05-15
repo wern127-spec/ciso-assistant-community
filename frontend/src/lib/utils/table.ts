@@ -1978,6 +1978,41 @@ export const listViewFields = {
 			status: RISK_ASSESSMENT_STATUS_FILTER
 		}
 	},
+	'business-services': {
+		head: ['name', 'refId', 'folder', 'criticality', 'status'],
+		body: ['name', 'ref_id', 'folder', 'criticality', 'status'],
+		filters: {
+			folder: DOMAIN_FILTER
+		}
+	},
+	'service-asset-links': {
+		head: ['businessService', 'asset', 'dependencyType', 'folder'],
+		body: ['business_service', 'asset', 'dependency_type', 'folder'],
+		filters: {
+			folder: DOMAIN_FILTER
+		}
+	},
+	'continuity-plans': {
+		head: ['name', 'businessService', 'version', 'status', 'folder'],
+		body: ['name', 'business_service', 'version', 'status', 'folder'],
+		filters: {
+			folder: DOMAIN_FILTER
+		}
+	},
+	'continuity-plan-tests': {
+		head: ['continuityPlan', 'testDate', 'testType', 'result'],
+		body: ['continuity_plan', 'test_date', 'test_type', 'result'],
+		filters: {
+			folder: DOMAIN_FILTER
+		}
+	},
+	'asset-recovery-procedures': {
+		head: ['name', 'asset', 'procedureType', 'version', 'folder'],
+		body: ['name', 'asset', 'procedure_type', 'version', 'folder'],
+		filters: {
+			folder: DOMAIN_FILTER
+		}
+	},
 	'asset-assessments': {
 		head: [
 			'refId',

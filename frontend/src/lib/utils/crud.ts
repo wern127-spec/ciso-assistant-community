@@ -727,6 +727,14 @@ export const URL_MODEL_MAP: ModelMap = {
 		],
 		reverseForeignKeyFields: [
 			{
+				field: 'asset',
+				urlModel: 'service-asset-links'
+			},
+			{
+				field: 'asset',
+				urlModel: 'asset-recovery-procedures'
+			},
+			{
 				field: 'assets',
 				urlModel: 'compliance-assessments',
 				disableCreate: true,
@@ -1430,6 +1438,156 @@ export const URL_MODEL_MAP: ModelMap = {
 			{ field: 'folder' },
 			{ field: 'created_at' },
 			{ field: 'updated_at' }
+		]
+	},
+	'business-services': {
+		endpointUrl: 'business-continuity/business-services',
+		name: 'businessservice',
+		localName: 'businessService',
+		localNamePlural: 'businessServices',
+		verboseName: 'Business service',
+		verboseNamePlural: 'Business services',
+		selectFields: [{ field: 'criticality' }, { field: 'status' }],
+		foreignKeyFields: [
+			{ field: 'folder', urlModel: 'folders', urlParams: 'content_type=DO&content_type=GL' },
+			{ field: 'owner', urlModel: 'users' }
+		],
+		reverseForeignKeyFields: [
+			{ field: 'business_service', urlModel: 'service-asset-links' },
+			{ field: 'business_service', urlModel: 'continuity-plans' }
+		],
+		detailViewFields: [
+			{ field: 'id' },
+			{ field: 'folder' },
+			{ field: 'ref_id' },
+			{ field: 'name' },
+			{ field: 'description' },
+			{ field: 'owner' },
+			{ field: 'criticality' },
+			{ field: 'status' },
+			{ field: 'rto_hours' },
+			{ field: 'rpo_hours' },
+			{ field: 'mtpd_hours' },
+			{ field: 'domain_impact_description' },
+			{ field: 'created_at', type: 'datetime' },
+			{ field: 'updated_at', type: 'datetime' }
+		]
+	},
+	'service-asset-links': {
+		endpointUrl: 'business-continuity/service-asset-links',
+		name: 'serviceassetlink',
+		localName: 'serviceAssetLink',
+		localNamePlural: 'serviceAssetLinks',
+		verboseName: 'Service-asset link',
+		verboseNamePlural: 'Service-asset links',
+		selectFields: [{ field: 'dependency_type' }],
+		foreignKeyFields: [
+			{ field: 'business_service', urlModel: 'business-services' },
+			{ field: 'asset', urlModel: 'assets' },
+			{ field: 'folder', urlModel: 'folders' }
+		],
+		detailViewFields: [
+			{ field: 'id' },
+			{ field: 'business_service' },
+			{ field: 'asset' },
+			{ field: 'dependency_type' },
+			{ field: 'asset_impact_description' },
+			{ field: 'notes' },
+			{ field: 'created_at', type: 'datetime' },
+			{ field: 'updated_at', type: 'datetime' }
+		]
+	},
+	'continuity-plans': {
+		endpointUrl: 'business-continuity/continuity-plans',
+		name: 'continuityplan',
+		localName: 'continuityPlan',
+		localNamePlural: 'continuityPlans',
+		verboseName: 'Continuity plan',
+		verboseNamePlural: 'Continuity plans',
+		selectFields: [{ field: 'status' }],
+		foreignKeyFields: [
+			{ field: 'business_service', urlModel: 'business-services' },
+			{ field: 'folder', urlModel: 'folders' },
+			{ field: 'referenced_asset_procedures', urlModel: 'asset-recovery-procedures' }
+		],
+		reverseForeignKeyFields: [
+			{ field: 'continuity_plan', urlModel: 'continuity-plan-tests' }
+		],
+		detailViewFields: [
+			{ field: 'id' },
+			{ field: 'folder' },
+			{ field: 'business_service' },
+			{ field: 'ref_id' },
+			{ field: 'name' },
+			{ field: 'version' },
+			{ field: 'scenario' },
+			{ field: 'recovery_strategy' },
+			{ field: 'procedure_steps' },
+			{ field: 'responsible_team' },
+			{ field: 'status' },
+			{ field: 'last_review_date' },
+			{ field: 'next_review_date' },
+			{ field: 'referenced_asset_procedures' },
+			{ field: 'created_at', type: 'datetime' },
+			{ field: 'updated_at', type: 'datetime' }
+		]
+	},
+	'continuity-plan-tests': {
+		endpointUrl: 'business-continuity/continuity-plan-tests',
+		name: 'continuityplantest',
+		localName: 'continuityPlanTest',
+		localNamePlural: 'continuityPlanTests',
+		verboseName: 'Continuity plan test',
+		verboseNamePlural: 'Continuity plan tests',
+		selectFields: [{ field: 'test_type' }, { field: 'result' }],
+		foreignKeyFields: [
+			{ field: 'continuity_plan', urlModel: 'continuity-plans' },
+			{ field: 'folder', urlModel: 'folders' },
+			{ field: 'evidence', urlModel: 'evidences' }
+		],
+		detailViewFields: [
+			{ field: 'id' },
+			{ field: 'continuity_plan' },
+			{ field: 'test_date' },
+			{ field: 'test_type' },
+			{ field: 'result' },
+			{ field: 'participants' },
+			{ field: 'objectives' },
+			{ field: 'findings' },
+			{ field: 'actions' },
+			{ field: 'evidence' },
+			{ field: 'created_at', type: 'datetime' },
+			{ field: 'updated_at', type: 'datetime' }
+		]
+	},
+	'asset-recovery-procedures': {
+		endpointUrl: 'business-continuity/asset-recovery-procedures',
+		name: 'assetrecoveryprocedure',
+		localName: 'assetRecoveryProcedure',
+		localNamePlural: 'assetRecoveryProcedures',
+		verboseName: 'Asset recovery procedure',
+		verboseNamePlural: 'Asset recovery procedures',
+		selectFields: [{ field: 'procedure_type' }],
+		foreignKeyFields: [
+			{ field: 'asset', urlModel: 'assets' },
+			{ field: 'folder', urlModel: 'folders' },
+			{ field: 'owner', urlModel: 'users' },
+			{ field: 'evidence', urlModel: 'evidences' }
+		],
+		detailViewFields: [
+			{ field: 'id' },
+			{ field: 'folder' },
+			{ field: 'asset' },
+			{ field: 'name' },
+			{ field: 'description' },
+			{ field: 'procedure_type' },
+			{ field: 'content' },
+			{ field: 'version' },
+			{ field: 'last_updated' },
+			{ field: 'owner' },
+			{ field: 'evidence' },
+			{ field: 'created_at', type: 'datetime' },
+			{ field: 'updated_at', type: 'datetime' }
 		]
 	},
 	processings: {
