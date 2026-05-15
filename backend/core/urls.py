@@ -158,6 +158,7 @@ urlpatterns = [
     path("", include("doc_management.urls")),
     path("privacy/", include("privacy.urls")),
     path("resilience/", include("resilience.urls")),
+    path("business-continuity/", include("business_continuity.urls")),
     path("crq/", include("crq.urls")),
     path("pmbok/", include("pmbok.urls")),
     path("metrology/", include("metrology.urls")),
