@@ -1,25 +1,36 @@
-# Status: Etap 3 — Frontend CRUD (CZĘŚCIOWO, mam blokadę)
+# Status: Etap 4 — Widok zbiorczy usługi (najważniejszy ekran)
 
 ## Co zrobiłem
-- Rozwiązałem problem pamięci Dockera inaczej niż przez build: uruchomiłem interfejs w trybie deweloperskim wprost na Macu (lekki, z auto-odświeżaniem), połączony z backendem w Dockerze. Działa stabilnie.
-- Zarejestrowałem wszystkie 5 encji w interfejsie (listy, kolumny, formularze, walidacja, menu boczne)
-- Dodałem sekcję **"Business Continuity"** w menu po lewej
-- Na karcie zasobu (Asset) dodałem powiązanie do usług i procedur
+- Zbudowałem **dedykowany widok zbiorczy usługi** pod adresem `/business-services/{id}` — to najważniejszy ekran całego modułu
+- Strona pobiera komplet danych jednym zapytaniem (endpoint `overview` z Etapu 2)
+- Świadomie zrobiłem go jako osobną stronę — dzięki temu **omija** błąd generycznej strony szczegółów z Etapu 3
+- Zawiera wszystkie **7 sekcji** zgodnie ze specyfikacją:
+  1. Domena (ścieżka u góry)
+  2. Parametry usługi (krytyczność, RTO, RPO, MTPD, właściciel)
+  3. Wpływ na domenę (renderowany markdown)
+  4. Zasoby wykorzystywane (tabela: zasób, typ zależności, wpływ, procedury odtworzeniowe)
+  5. Plan ciągłości (scenariusz, strategia, kroki — wszystko jako renderowany markdown)
+  6. Historia testów (tabela od najnowszego: data, typ, wynik z kolorową ikoną, ustalenia)
+  7. Przyciski akcji (Edytuj usługę / Dodaj plan / Dodaj test)
 
-## Co działa (sprawdzone)
-- **Logowanie** działa (admin@admin.com / admin1234)
-- **Wszystkie 5 list działa** — wchodzisz w menu "Business Continuity", widzisz listy usług, planów, testów, procedur, powiązań
-- **Dodawanie rekordów przez API działa** (utworzyłem testową usługę i powiązania — pojawiają się na liście w interfejsie)
-- Sekcja w menu jest widoczna
-- Kontrolnie: istniejące ekrany CISO (np. domeny) działają normalnie — środowisko jest zdrowe
+## Jak to sprawdzić (klikalnie)
+1. Wejdź na **http://localhost:5173** (uwaga: teraz port 5173, nie 8443 — interfejs chodzi w trybie dev)
+2. Zaloguj się: `admin@admin.com` / `admin1234`
+3. W menu po lewej kliknij **"Business Continuity"** → **"Business services"**
+4. Lista będzie pusta (dane testowe sprzątnąłem) — **pełne dane demo utworzę w Etapie 5**
+5. Aby zobaczyć widok zbiorczy już teraz: dodaj usługę przyciskiem **+** na liście, potem kliknij w nią
 
-## Na czym utknąłem (reguła STOP)
-- **Strona szczegółów pojedynczego rekordu** (np. klik w konkretny plan, żeby zobaczyć/edytować jego pełne dane) **zwraca błąd 500** dla naszych 5 nowych encji.
-- Istniejące ekrany CISO (domeny itp.) otwierają szczegóły bez problemu — błąd dotyczy tylko naszych nowych encji.
-- Spróbowałem ~5 różnych podejść diagnostycznych (analiza kodu ładującego dane, nagłówki, instrumentacja loga w 2 miejscach, skan wszystkich warstw layoutu i hooków). Nie ustaliłem jednoznacznie źródła — błąd pojawia się zanim kod ładujący stronę szczegółów w ogóle się uruchamia, co jest nietypowe.
+Sprawdziłem to programowo na danych testowych: wszystkie 7 sekcji renderuje się poprawnie, markdown (nagłówki, pogrubienia, listy) zamienia się na ładny tekst, ikony wyników testów są kolorowe (zielony=sukces, żółty=częściowy, czerwony=porażka).
 
-## Ważny kontekst do decyzji
-Najważniejszy ekran całego modułu (Etap 4 — **widok zbiorczy usługi** z 7 sekcjami) i tak buduję jako **osobną, dedykowaną stronę**, która NIE korzysta z zepsutego mechanizmu generycznego. Czyli ta blokada najpewniej **nie dotknie głównego ekranu**, który zobaczysz.
+## Co działa
+- Widok zbiorczy `/business-services/{id}` — wszystkie 7 sekcji, z markdownem i kolorami
+- Listy 5 encji, dodawanie rekordów, menu "Business Continuity"
+- Logowanie
 
-## Co dalej — proszę o decyzję
-Pytam Cię w osobnym pytaniu, jak chcesz, żebym kontynuował.
+## Co nie działa lub świadomie pominąłem
+- **Generyczna strona szczegółów** pojedynczych pod-encji (plan/test/procedura) nadal zwraca 500 — znany problem z Etapu 3, do diagnozy później. Nie dotyka głównego widoku zbiorczego (zrobiony osobno).
+- Przycisk "Edytuj usługę" prowadzi do generycznego formularza edycji — może wymagać tej samej naprawy później.
+- Dane demo — to Etap 5.
+
+## Co dalej
+Etap 5 — skrypt tworzący realistyczne dane demo (2 usługi, zasoby, plany, testy, procedury), żebyś zobaczył moduł "z życia". Napisz **"dalej"**.
