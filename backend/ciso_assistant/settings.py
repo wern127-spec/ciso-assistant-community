@@ -381,6 +381,7 @@ INSTALLED_APPS = [
     "tprm",
     "privacy",
     "resilience",
+    "business_continuity",
     "crq",
     "metrology",
     "chat",
