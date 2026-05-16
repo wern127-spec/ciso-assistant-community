@@ -20,8 +20,8 @@
 - **Co to NIE psuje:** główny widok zbiorczy (ma własną stronę i go omija), listy, dodawanie rekordów, API, dane demo. Czyli realne użycie modułu jest możliwe bez tej strony.
 - Przycisk „Edytuj usługę" prowadzi do generycznego formularza — może być dotknięty tym samym problemem.
 
-## Decyzja dla Ciebie
-Moduł jest **gotowy do użycia** w zakresie najważniejszego scenariusza (przeglądanie usług przez widok zbiorczy, listy, dodawanie, dane demo, API). Zostaje jeden błąd otwierania pojedynczego pod-obiektu. Wybierz, co dalej (zapytam Cię osobno):
-- **A)** Uznajemy moduł za zakończony z udokumentowanym ograniczeniem (zalecane — najważniejsze działa).
-- **B)** Robię jeszcze jedno, skupione podejście do błędu 500 — ale wymaga to chwilowego restartu interfejsu, żeby zobaczyć ukryty komunikat błędu w konsoli serwera (Ty potem odświeżysz okno).
-- **C)** Coś innego / masz pytania.
+## Decyzja (podjęta)
+Wybrałeś opcję **A** — moduł zakończony z udokumentowanym ograniczeniem. Najważniejszy scenariusz (przeglądanie usług przez widok zbiorczy, listy, dodawanie, dane demo, API) działa w pełni. Błąd 500 pojedynczego pod-obiektu pozostaje opisany jako znane ograniczenie w `documentation/business-continuity.md` — do ewentualnej naprawy w przyszłości.
+
+## Stan końcowy
+**Moduł Business Continuity ukończony.** Wszystkie 6 etapów zrobione, zatwierdzone i wypchnięte na gałąź `feat/business-continuity-mvp`. Gotowy do użycia i do ewentualnego zgłoszenia (Pull Request) do oryginalnego projektu.
