@@ -1,4 +1,5 @@
 import { BASE_API_URL } from '$lib/utils/constants';
+import { dev } from '$app/environment';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -33,7 +34,7 @@ export const load: PageServerLoad = async ({ fetch, locals, cookies }) => {
 		httpOnly: true,
 		sameSite: 'lax',
 		path: '/',
-		secure: true
+		secure: !dev
 	});
 
 	redirect(302, '/');

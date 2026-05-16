@@ -1,4 +1,5 @@
 import { BASE_API_URL, DEFAULT_LANGUAGE } from '$lib/utils/constants';
+import { dev } from '$app/environment';
 import { safeTranslate } from '$lib/utils/i18n';
 import type { User } from '$lib/utils/types';
 import { redirect, type Handle, type HandleFetch, type RequestEvent } from '@sveltejs/kit';
@@ -44,7 +45,7 @@ function setLocaleCookie(event: RequestEvent, locale: string) {
 		httpOnly: false,
 		sameSite: 'lax',
 		path: '/',
-		secure: true
+		secure: !dev
 	});
 }
 
@@ -69,7 +70,7 @@ async function ensureCsrfToken(event: RequestEvent): Promise<string> {
 			httpOnly: false,
 			sameSite: 'lax',
 			path: '/',
-			secure: true
+			secure: !dev
 		});
 	}
 	return csrfToken;

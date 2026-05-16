@@ -1,4 +1,5 @@
 import { getSecureRedirect } from '$lib/utils/helpers';
+import { dev } from '$app/environment';
 
 import { ALLAUTH_API_URL, BASE_API_URL } from '$lib/utils/constants';
 import { loginSchema } from '$lib/utils/schemas';
@@ -83,7 +84,7 @@ export const actions: Actions = {
 							httpOnly: true,
 							sameSite: 'lax',
 							path: '/',
-							secure: true
+							secure: !dev
 						});
 					}
 
@@ -103,21 +104,21 @@ export const actions: Actions = {
 			httpOnly: true,
 			sameSite: 'lax',
 			path: '/',
-			secure: true
+			secure: !dev
 		});
 
 		cookies.set('allauth_session_token', res.meta.session_token, {
 			httpOnly: true,
 			sameSite: 'lax',
 			path: '/',
-			secure: true
+			secure: !dev
 		});
 
 		cookies.set('show_first_login_modal', 'true', {
 			httpOnly: false,
 			sameSite: 'lax',
 			path: '/',
-			secure: true
+			secure: !dev
 		});
 		const next = url.searchParams.get('next');
 		const secureNext = getSecureRedirect(next) || '/';
@@ -152,14 +153,14 @@ export const actions: Actions = {
 			httpOnly: true,
 			sameSite: 'lax',
 			path: '/',
-			secure: true
+			secure: !dev
 		});
 
 		event.cookies.set('allauth_session_token', response.meta.session_token, {
 			httpOnly: true,
 			sameSite: 'lax',
 			path: '/',
-			secure: true
+			secure: !dev
 		});
 
 		return { form };
@@ -203,14 +204,14 @@ export const actions: Actions = {
 			httpOnly: true,
 			sameSite: 'lax',
 			path: '/',
-			secure: true
+			secure: !dev
 		});
 
 		event.cookies.set('allauth_session_token', response.meta.session_token, {
 			httpOnly: true,
 			sameSite: 'lax',
 			path: '/',
-			secure: true
+			secure: !dev
 		});
 
 		const next = event.url.searchParams.get('next');
